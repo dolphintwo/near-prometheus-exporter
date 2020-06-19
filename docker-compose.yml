@@ -1,0 +1,57 @@
+version: "2"
+services:
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    ports:
+      - 9100:9100
+    restart: on-failure
+    command: ["--path.procfs=/host/proc", "--path.sysfs=/host/sys"]
+
+  near-exporter:
+    build: .
+    image: near-exporter:latest
+    network_mode: host
+    ports:
+      - "9333"
+    restart: on-failure
+    command: ["/dist/main", "-accountId", "c1.hashquark"]
+
+  prometheus:
+    image: prom/prometheus:latest
+    tty: true
+    volumes:
+      - ./etc/prometheus:/etc/prometheus/
+    restart: always
+    network_mode: host
+    ports:
+      - "9090"
+    command: ["--config.file=/etc/prometheus/prometheus.yml"]
+    depends_on:
+      - node-exporter
+      - near-exporter
+
+  init_grafana:
+    image: alpine:latest
+    volumes:
+      - ./etc/grafana:/grafana_data
+    command: ["chown", "-R", "472:472", "/grafana_data"]
+
+  grafana:
+    image: grafana/grafana:latest
+    tty: true
+    volumes:
+      - ./etc/grafana:/var/lib/grafana
+      - ./etc/grafana/provisioning:/etc/grafana/provisioning
+      - ./etc/grafana/custom.ini:/etc/grafana/grafana.ini
+    restart: always
+    network_mode: host
+    user: "472"
+    ports:
+      - "3000"
+    depends_on:
+      - prometheus
