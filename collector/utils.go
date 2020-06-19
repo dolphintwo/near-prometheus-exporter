@@ -4,25 +4,27 @@ import (
 	"fmt"
 	"hash/fnv"
 	"strconv"
-	"strings"
 )
 
-func StringToInt64(s string) int64 {
-	v, err := strconv.ParseInt(s[0:6], 10, 64)
+func GetStakeFromString(s string) float64 {
+	if len(s) == 1 {
+		return 0
+	}
+	l := len(s) - 19 - 5
+	v, err := strconv.ParseFloat(s[0:l], 64)
 	if err != nil {
 		fmt.Println(err)
 	}
-	return int64(v)
+	return float64(v)
 }
 
-func GetFloatVersionFromString(s string) (float64, error) {
-	value := strings.Replace(s, ".", "", -1)
-	v, err := strconv.ParseFloat(value, 64)
+func GetFloatFromString(s string) float64 {
+	v, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		fmt.Println(err)
-		return 0.0, err
+		return 0
 	}
-	return v, err
+	return v
 }
 
 func HashString(s string) uint32 {
