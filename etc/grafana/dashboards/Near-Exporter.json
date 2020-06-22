@@ -407,7 +407,11 @@
         "message": "节点Near版本落后，需要升级。",
         "name": "Need Update alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "ktgkuoZGk"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -579,7 +583,11 @@
         "handler": 1,
         "name": "HashQuark Validator alert",
         "noDataState": "ok",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "ktgkuoZGk"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -739,6 +747,9 @@
         "notifications": [
           {
             "uid": "uwSILBiMk"
+          },
+          {
+            "uid": "ktgkuoZGk"
           }
         ]
       },
@@ -803,8 +814,7 @@
           "fill": true,
           "line": true,
           "op": "gt",
-          "value": 100000,
-          "yaxis": "left"
+          "value": 100000
         }
       ],
       "timeFrom": null,
@@ -826,6 +836,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1466",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -834,6 +845,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1467",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1051,7 +1063,11 @@
         "message": "Block not producing",
         "name": "Block Produced alert",
         "noDataState": "alerting",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "ktgkuoZGk"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -1278,7 +1294,11 @@
         "message": "出块率低于91%，请登陆查看原因",
         "name": "出块率 alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "ktgkuoZGk"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -1436,6 +1456,9 @@
         "notifications": [
           {
             "uid": "uwSILBiMk"
+          },
+          {
+            "uid": "ktgkuoZGk"
           }
         ]
       },
@@ -1740,7 +1763,7 @@
             },
             "query": {
               "params": [
-                "A",
+                "B",
                 "5m",
                 "now"
               ]
@@ -1756,10 +1779,14 @@
         "for": "2m",
         "frequency": "30s",
         "handler": 1,
-        "message": "内存占用超过80%，请注意查看资源消耗情况",
-        "name": "Memory Alert",
+        "message": "CPU负载超过80%，请注意查看资源消耗情况",
+        "name": "CPU Alert",
         "noDataState": "no_data",
-        "notifications": []
+        "notifications": [
+          {
+            "uid": "ktgkuoZGk"
+          }
+        ]
       },
       "aliasColors": {},
       "bars": false,
@@ -1807,13 +1834,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "100 - ((node_memory_MemAvailable_bytes * 100) / node_memory_MemTotal_bytes)",
-          "instant": false,
-          "interval": "",
-          "legendFormat": "Mem",
-          "refId": "A"
-        },
-        {
           "expr": "(((count(count(node_cpu_seconds_total) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle'}[5m])))) * 100) / count(count(node_cpu_seconds_total) by (cpu))",
           "interval": "",
           "legendFormat": "CPU",
@@ -1832,7 +1852,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Memory / CPU",
+      "title": " CPU",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1963,95 +1983,149 @@
       "valueName": "current"
     },
     {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "rgba(245, 54, 54, 0.9)",
-        "rgba(237, 129, 40, 0.89)",
-        "rgba(50, 172, 45, 0.97)"
-      ],
+      "alert": {
+        "alertRuleTags": {},
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                80
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "A",
+                "5m",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "avg"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "for": "2m",
+        "frequency": "30s",
+        "handler": 1,
+        "message": "内存占用超过80%，请注意查看资源消耗情况",
+        "name": "Memory Alert",
+        "noDataState": "no_data",
+        "notifications": [
+          {
+            "uid": "ktgkuoZGk"
+          }
+        ]
+      },
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "Prometheus",
-      "decimals": 0,
-      "description": "Total SWAP",
       "fieldConfig": {
         "defaults": {
           "custom": {}
         },
         "overrides": []
       },
-      "format": "bytes",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
-        "h": 4,
+        "h": 8,
         "w": 4,
         "x": 16,
         "y": 22
       },
-      "id": 48,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "maxPerRow": 6,
-      "nullPointMode": "null",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "100%",
-      "prefix": "",
-      "prefixFontSize": "100%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
+      "hiddenSeries": false,
+      "id": 88,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
       },
-      "tableColumn": "node_memory_SwapTotal_bytes{instance=\"localhost:9100\", job=\"node\"}",
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
-          "expr": "node_memory_SwapTotal_bytes",
+          "expr": "100 - ((node_memory_MemAvailable_bytes * 100) / node_memory_MemTotal_bytes)",
+          "instant": false,
           "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "A",
-          "step": 900
+          "legendFormat": "Mem",
+          "refId": "A"
         }
       ],
-      "thresholds": "",
-      "title": "SWAP Total",
-      "type": "singlestat",
-      "valueFontSize": "100%",
-      "valueMaps": [
+      "thresholds": [
         {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 80
         }
       ],
-      "valueName": "current"
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Memory",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:401",
+          "format": "percent",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        },
+        {
+          "$$hashKey": "object:402",
+          "format": "percent",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "0",
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "cacheTimeout": null,
@@ -2389,83 +2463,6 @@
     {
       "cacheTimeout": null,
       "datasource": "Prometheus",
-      "description": "Used Swap",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {},
-          "mappings": [
-            {
-              "id": 0,
-              "op": "=",
-              "text": "N/A",
-              "type": 1,
-              "value": "null"
-            }
-          ],
-          "max": 100,
-          "min": 0,
-          "nullValueMode": "null",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "rgba(50, 172, 45, 0.97)",
-                "value": null
-              },
-              {
-                "color": "rgba(237, 129, 40, 0.89)",
-                "value": 10
-              },
-              {
-                "color": "rgba(245, 54, 54, 0.9)",
-                "value": 25
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 16,
-        "y": 26
-      },
-      "id": 50,
-      "links": [],
-      "options": {
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "7.0.3",
-      "targets": [
-        {
-          "expr": "((node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) / node_memory_SwapTotal_bytes ) * 100",
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "A",
-          "step": 900
-        }
-      ],
-      "title": "SWAP Used",
-      "type": "gauge"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
       "description": "Used Root FS",
       "fieldConfig": {
         "defaults": {
@@ -2556,42 +2553,6 @@
       "type": "row"
     },
     {
-      "alert": {
-        "alertRuleTags": {},
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                80
-              ],
-              "type": "gt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "B",
-                "10s",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "for": "60s",
-        "frequency": "20s",
-        "handler": 1,
-        "message": "CPU负载超过80%！，请查看是否异常",
-        "name": "CPU Load High",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "aliasColors": {
         "Busy": "#EAB839",
         "Busy Iowait": "#890F02",
@@ -2658,22 +2619,27 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:507",
           "alias": "Busy Iowait",
           "color": "#890F02"
         },
         {
+          "$$hashKey": "object:508",
           "alias": "Idle",
           "color": "#7EB26D"
         },
         {
+          "$$hashKey": "object:509",
           "alias": "Busy System",
           "color": "#EAB839"
         },
         {
+          "$$hashKey": "object:510",
           "alias": "Busy User",
           "color": "#0A437C"
         },
         {
+          "$$hashKey": "object:511",
           "alias": "Busy Other",
           "color": "#6D1F62"
         }
@@ -2743,15 +2709,7 @@
           "step": 240
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "gt",
-          "value": 80
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
@@ -2771,6 +2729,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:542",
           "format": "short",
           "label": "",
           "logBase": 1,
@@ -2779,6 +2738,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:543",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -4331,7 +4291,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -4350,5 +4310,5 @@
   "timezone": "",
   "title": "Near Exporter",
   "uid": "cJ33jmZGk",
-  "version": 4
+  "version": 10
 }
